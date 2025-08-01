@@ -1,8 +1,10 @@
 /***********************************************************************
 * Filename: coolant_controller.c
-* File description: Proportional integral Derivative controller.
-* Used formula is
-* u(t) = kp * temp_error + ki * integral + kd * derivative
+* File description: This file process main logic of cooler and
+* regulates pump and fan power using
+* Proportional integral Derivative controller. 
+* Used formula is:
+* ` u(t) = kp * temp_error + ki * integral + kd * derivative `
 *
 * Project: EAE_Firmware
 * Author: Kateryna Oliinyk
@@ -20,6 +22,7 @@ static pid_controller_t pid_controller_val = {
     .ki = 0,
     .kd = 0,
     .prev_error = 0,
+    /* Summarize all errors */
     .integral = 0,
 };
 

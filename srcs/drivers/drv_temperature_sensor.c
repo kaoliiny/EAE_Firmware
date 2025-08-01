@@ -10,7 +10,7 @@
 #include <stdint.h>
 #include "drv_temperature_sensor.h"
 
-/* Dummy data to emulate temperature sensor measurments in Celcius */
+/* Dummy data to emulate temperature sensor measurments in Celsius */
 static uint8_t fake_temperature_measurments[TEMPERATURE_ARRAY_SIZE] = {
     /* 20–35C warm-up (each value repeated twice) */
     20, 20, 21, 21, 22, 22, 23, 23, 24, 24,
