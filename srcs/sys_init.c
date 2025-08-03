@@ -8,6 +8,7 @@
 ***********************************************************************/
 
 #include <stdlib.h>
+#include "drivers/drivers.h"
 #include "sys_init.h"
 
 static void canopen_init(void) {
@@ -19,8 +20,8 @@ static void setpoints_init(coolant_t *coolant, void *temperature_sp) {
 }
 
 void turn_off_components(void) {
-    // drv_turn_off_fan();
-    // drv_turn_off_pump();
+    drv_fan_turn_off();
+    drv_pump_turn_off();
 }
 
 void sys_deinit(void) {
@@ -28,7 +29,9 @@ void sys_deinit(void) {
 }
 
 int8_t sys_init(coolant_t *coolant, void *temperature_sp) {
-    /* drivers init. Currently no drivers no itit. All dummy */
+    /* drivers init. Currently no drivers no init. All dummy */
+    drv_pump_init();
+    drv_fan_init();
     /* setpoints_init */
     setpoints_init(coolant, temperature_sp);
     /* CAN bus init */

@@ -16,13 +16,14 @@
 #include "main.h"
 #include "coolant_controller.h"
 #include "unistd.h"
+#include <time.h>
 
-static int args_validation(int argc, void **argv) {
+static enum coolant_state_e args_validation(int argc, void **argv) {
     int8_t temperature_sp;
 
     if (argc == 2) {
         temperature_sp = atoi(argv[1]);
-        if (temperature_sp >= TEMPERATURE_LOW_SETPOINT && temperature_sp < TEMPERATURE_HIGH_SETPOINT) {
+        if (temperature_sp >= TEMPERATURE_LOW_SETPOINT && temperature_sp <= TEMPERATURE_HIGH_SETPOINT) {
             return 0;
         }
     }
@@ -37,6 +38,8 @@ static int args_validation(int argc, void **argv) {
 
 __attribute__((noreturn))
 static void main_loop(coolant_t *coolant, void *temperature_sp) {
+    struct timespec request = {0, CYCLE_TAKT_NS};
+
     while (true) {
         switch(coolant->state) {
             case STARTUP:
@@ -76,7 +79,8 @@ static void main_loop(coolant_t *coolant, void *temperature_sp) {
             default:
                 break;
         }
-        sleep(1);
+        /* 0.5s delay */
+        nanosleep(&request, NULL);
     }
 }
 

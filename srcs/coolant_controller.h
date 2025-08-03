@@ -15,13 +15,15 @@
 #define _PID_CONTROLLER_H_
 
 /* Celsius */
-#define DCDC_TEMPERATURE_LIMIT 110
+#define DCDC_TEMPERATURE_HIGH_LIMIT 115
+
+#define DCDC_TEMPERATURE_LOW_LIMIT(temp_sp) ((temp_sp) - 20)
 
 typedef struct pid_controller_s {
-    const int8_t kp;
-    const int8_t ki;
-    const int8_t kd;
-    int8_t prev_error;
+    const int16_t kp;
+    const int16_t ki;
+    const int16_t kd;
+    int16_t prev_error;
     int16_t integral;
 } pid_controller_t;
 
