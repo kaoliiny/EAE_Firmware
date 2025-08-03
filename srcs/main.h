@@ -58,6 +58,6 @@ typedef struct coolant_s {
     uint8_t fan_power;
     uint8_t temperature_setpoint;
     int8_t ignition_swith_state : 1;
-} coolant_t __attribute__((packed));
+} coolant_t;
 
 #endif

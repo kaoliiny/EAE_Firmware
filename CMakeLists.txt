@@ -8,10 +8,18 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # set(CMAKE_C_COMPILER gcc)
 
-add_subdirectory(srcs)
+# Set global CFLAGS
+set(CMAKE_C_FLAGS " -Wall -Wextra -Werror -std=c99")
 
-# Can disabled via command-line argument -DTEST_INCLUDE=OFF
+# Can disabled via command-line argument -DGTESTS_INCLUDE=OFF
 set(GTESTS_INCLUDE ON CACHE BOOL "Include Google tests. Enabled by default")
+
+# Can disabled via command-line argument -DAPP_INCLUDE=OFF
+set(APP_INCLUDE ON CACHE BOOL "Include build of main application Enabled by default")
+
+if(APP_INCLUDE)
+    add_subdirectory(srcs)
+endif()
 
 if(GTESTS_INCLUDE)
     include(FetchContent)
