@@ -8,6 +8,29 @@
 
 #include "../main.h"
 
+/* Example CAN init function */
+void can_init(void) {
+#if CAN_OPEN
+    int8_t err;
+
+    coolant->CO = CO_new(NULL, NULL);
+    err = CO_CANopenInit(coolant->CO,          /* CANopen object */
+                         NULL,                 /* alternate NMT */
+                         NULL,                 /* alternate em */
+                         OD,                   /* Object dictionary */
+                         OD_STATUS_BITS,       /* Optional OD_statusBits */
+                         NMT_CONTROL,          /* CO_NMT_control_t */
+                         FIRST_HB_TIME,        /* firstHBTime_ms */
+                         SDO_SRV_TIMEOUT_TIME, /* SDOserverTimeoutTime_ms */
+                         SDO_CLI_TIMEOUT_TIME, /* SDOclientTimeoutTime_ms */
+                         SDO_CLI_BLOCK,        /* SDOclientBlockTransfer */
+                         activeNodeId, 0);
+    if (!err) {
+        CO_CANopenInitPDO(coolant->CO, Ccoolant->CO->em, OD, activeNodeId, 0);
+    }
+#endif
+}
+
 void can_over_temperature_error_report(coolant_t *coolant __attribute__((unused)),
      int16_t temp __attribute__((unused)), uint8_t is_error_active __attribute__((unused))) {
 #if CAN_OPEN

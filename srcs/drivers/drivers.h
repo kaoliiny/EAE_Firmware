@@ -1,6 +1,6 @@
 /***********************************************************************
 * Filename: drivers.h
-* File description: 
+* File description: All required driver headers are included here.
 * Project: EAE_Firmware
 * Author: Kateryna Oliinyk
 * Created Date: 30 07 2025

@@ -38,7 +38,7 @@ static enum coolant_error_status_e args_validation(int argc, char **argv) {
     return COOLANT_VALIDATION_ERROR;
 }
 
-static enum coolant_error_status_e main_loop(coolant_t *coolant, void *temperature_sp) {
+static enum coolant_error_status_e main_loop(coolant_t *coolant, uint8_t temperature_sp) {
     struct timespec request = {0, CYCLE_TAKT_NS};
 
     while (true) {
@@ -93,7 +93,7 @@ int main(int argc, char **argv) {
 
     err_no = args_validation(argc, argv);
     if (err_no == 0) {
-        err_no = main_loop(&coolant, argv[1]);
+        err_no = main_loop(&coolant, atoi(argv[1]));
     }
 
     return err_no;

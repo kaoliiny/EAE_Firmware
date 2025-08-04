@@ -14,9 +14,10 @@
 #ifndef _PID_CONTROLLER_H_
 #define _PID_CONTROLLER_H_
 
+#include "main.h"
+
 /* Celsius */
 #define DCDC_TEMPERATURE_HIGH_LIMIT 115
-
 #define DCDC_TEMPERATURE_LOW_LIMIT(temp_sp) ((temp_sp) - 20)
 
 typedef struct pid_controller_s {
