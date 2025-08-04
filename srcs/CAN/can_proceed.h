@@ -8,6 +8,8 @@
 
 #include "../main.h"
 
+void can_init(void);
+
 void can_over_temperature_error_report(coolant_t *coolant, int16_t temp, uint8_t is_error_active);
 
 void can_malfunction_error_report(coolant_t *coolant, uint8_t is_error_active);

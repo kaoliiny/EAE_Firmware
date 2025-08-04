@@ -18,7 +18,7 @@
 #include "drivers/drivers.h"
 #include "main.h"
 
-/* Those values are approximate. Shoul be tuned */
+/* Those values are approximate. Should be tuned */
 static pid_controller_t pid_controller_val = {
     /* shows how much we must react on error */
     .kp = 3,
@@ -68,7 +68,8 @@ void regulate_cooling(int16_t pid_value) {
         fan_speed = FAN_SPEED_OFF;
         pump_speed = PUMP_SPEED_OFF;
     }
-    /* TODO: save previous values to not overwrite if unnesessary */
+    /* TODO: check previous values and compare with current
+     * to not overwrite if unnesessary */
     drv_fan_set_speed(fan_speed);
     drv_pump_set_speed(pump_speed);
 }

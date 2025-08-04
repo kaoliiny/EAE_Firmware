@@ -12,7 +12,7 @@
 
 #include "main.h"
 
-enum coolant_error_status_e sys_init(coolant_t *coolant, void *temperature_sp);
+enum coolant_error_status_e sys_init(coolant_t *coolant, uint8_t temperature_sp) ;
 void sys_deinit(void);
 void sys_shutdown(void);
 void turn_off_components(void);

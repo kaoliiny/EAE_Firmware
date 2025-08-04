@@ -23,7 +23,7 @@
 /* Low edge value in Celsius degrees to be set as reference  */
 #define TEMPERATURE_LOW_SETPOINT 20
 /* High edge value in Celsius degrees to be set as reference  */
-#define TEMPERATURE_HIGH_SETPOINT 92
+#define TEMPERATURE_HIGH_SETPOINT 95
 
 #define CYCLE_TAKT_NS 500000000 /* 0.5s */
 
