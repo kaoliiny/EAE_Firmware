@@ -11,14 +11,17 @@
 * Created Date: 31 07 2025
 ***********************************************************************/
 
-#include "main.h"
+#include <stdbool.h>
+
+#include "CAN/can_proceed.h"
 #include "coolant_controller.h"
 #include "drivers/drivers.h"
+#include "main.h"
 
 /* Those values are approximate. Shoul be tuned */
 static pid_controller_t pid_controller_val = {
     /* shows how much we must react on error */
-    .kp = 2,
+    .kp = 3,
     /* shows how much we must react on integral changes */
     .ki = 1,
     .kd = 3,
@@ -40,7 +43,7 @@ int16_t pid_controller(coolant_t *coolant, int16_t current_temperature) {
     return output;
 }
 
-void regulate_coooling(int16_t pid_value) {
+void regulate_cooling(int16_t pid_value) {
     enum fan_speed_e fan_speed;
     enum pump_speed_e pump_speed;
 
@@ -73,34 +76,50 @@ void regulate_coooling(int16_t pid_value) {
 enum coolant_error_status_e coolant_logic_proceed(coolant_t *coolant) {
     int16_t current_temperature = drv_temperature_sensor_get_temperature();
     int16_t pid_coefficient;
-    enum coolant_error_status_e ret_value = COOLANT_OK;
+    enum coolant_error_status_e ret_value = COOLANT_ON_OK;
 
     printf("current_temperature = %d\n", current_temperature);
     /* Sensor could't read temperature properly. Malfunction */
     if (current_temperature == DRV_TEMPERATURE_SENSOR_ERROR) {
-        return COOLANT_MALFUNCTION;
+        coolant->err_bits.temp_sensor_malfunction = true;
+        ret_value = COOLANT_MALFUNCTION;
     } else if (current_temperature >= DCDC_TEMPERATURE_HIGH_LIMIT) {
+        coolant->err_bits.overheat = true;
+        /* set pump and fan full power */
+        drv_fan_set_speed(FAN_SPEED_MAX);
+        drv_pump_set_speed(PUMP_SPEED_MAX);
+        /* Report over temperature error */
+        can_over_temperature_error_report(coolant, current_temperature, true);
         ret_value = COOLANT_OVERHEAT_ERROR;
     } else if (current_temperature <= DCDC_TEMPERATURE_LOW_LIMIT(coolant->temperature_setpoint)) {
         /* If current temperature much cooler than setpoint we're good. Nothing to do. */
         drv_fan_set_speed(FAN_SPEED_OFF);
         drv_pump_set_speed(PUMP_SPEED_OFF);
     } else {
+        if (coolant->err_bits.overheat) {
+            /* Danger has gone. We're safe */
+            coolant->err_bits.overheat = false;
+            /* Report over temperature error has gone */
+            can_over_temperature_error_report(coolant, current_temperature, false);
+        }
+
         pid_coefficient = pid_controller(coolant, current_temperature);
-        regulate_coooling(pid_coefficient);
+        regulate_cooling(pid_coefficient);
         printf("pid=%d\n", pid_coefficient);
     }
 
     return ret_value;
 }
 
+/* Wrapper over drv_ignition_switch_get_state() */
 enum coolant_error_status_e get_ignition_switch_state(void) {
     enum ignition_switch_error_status_e ignition_switch_state = drv_ignition_switch_get_state();
 
-    if (ignition_switch_state == IGNITION_SWITCH_OFF)
+    if (ignition_switch_state == IGNITION_SWITCH_OFF) {
         return COOLANT_OFF;
-    else if (ignition_switch_state == IGNITION_SWITCH_ERROR)
+    } else if (ignition_switch_state == IGNITION_SWITCH_ERROR) {
         return COOLANT_MALFUNCTION;
+    }
 
-    return COOLANT_OK;
+    return COOLANT_ON_OK;
 }

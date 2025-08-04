@@ -1,6 +1,6 @@
 /***********************************************************************
 * Filename: drv_pump.h
-* File description: 
+* File description: header for pumps driver's emulation.
 * Project: EAE_Firmware
 * Author: Kateryna Oliinyk
 * Created Date: 30 07 2025
@@ -33,6 +33,6 @@ void drv_pump_set_speed(enum pump_speed_e speed);
 enum pump_state_e drv_pump_get_state(void);
 enum pump_speed_e drv_pump_get_speed(void);
 void drv_pump_turn_off(void);
-void drv_pump_init(void);
+enum pump_state_e drv_pump_init(void);
 
 #endif

@@ -27,9 +27,10 @@ typedef struct pid_controller_s {
     int16_t integral;
 } pid_controller_t;
 
-/* Wrapper over drives function drv_ignition_switch to achive proper error handling. */
+/* Wrapper over drives function drv_ignition_switch to achieve proper error handling. */
 enum coolant_error_status_e get_ignition_switch_state(void);
 
+/* Coolant's brain */
 enum coolant_error_status_e coolant_logic_proceed(coolant_t *coolant);
 
 #endif

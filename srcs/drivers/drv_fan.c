@@ -1,6 +1,6 @@
 /***********************************************************************
 * Filename: drv_fan.c
-* File description: 
+* File description: fan driver's emulation.
 * Project: EAE_Firmware
 * Author: Kateryna Oliinyk
 * Created Date: 30 07 2025
@@ -31,7 +31,9 @@ void drv_fan_turn_off(void) {
     drv_fan_set_state(FAN_OFF);
 }
 
-void drv_fan_init(void) {
+enum fan_state_e drv_fan_init(void) {
     drv_fan_set_state(FAN_ON);
     drv_fan_set_speed(FAN_SPEED_OFF);
+
+    return FAN_ON;
 }

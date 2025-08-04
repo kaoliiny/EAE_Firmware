@@ -1,6 +1,6 @@
 /***********************************************************************
 * Filename: drv_ignition_switch.c
-* File description: 
+* File description: This file emulates ignition switch behavior.
 * Project: EAE_Firmware
 * Author: Kateryna Oliinyk
 * Created Date: 30 07 2025
