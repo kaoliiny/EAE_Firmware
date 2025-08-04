@@ -15,7 +15,7 @@ enum pump_state_e {
     PUMP_MALFUNCTION
 };
 
-enum pump_speed_state_e {
+enum pump_speed_e {
     PUMP_SPEED_OFF,
     PUMP_SPEED_LOW,
     PUMP_SPEED_AVERAGE,
@@ -25,13 +25,14 @@ enum pump_speed_state_e {
 
 typedef struct pump_s {
     enum pump_state_e state;
-    enum pump_speed_state_e speed;
+    enum pump_speed_e speed;
 } pump_t;
 
 void drv_pump_set_state(enum pump_state_e state);
-void drv_pump_set_speed(enum pump_speed_state_e speed);
+void drv_pump_set_speed(enum pump_speed_e speed);
 enum pump_state_e drv_pump_get_state(void);
-enum pump_speed_state_e drv_pump_get_speed(void);
-void drv_turn_off_pump(void);
+enum pump_speed_e drv_pump_get_speed(void);
+void drv_pump_turn_off(void);
+void drv_pump_init(void);
 
 #endif

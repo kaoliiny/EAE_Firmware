@@ -9,6 +9,7 @@
 #include <stdbool.h>
 #include "drv_ignition_switch.h"
 
-int8_t drv_get_ignition_switch_state(void) {
-    return true;
+/* For simplicity, currently our dummy ignition switch always returns `ON` state. */
+enum ignition_switch_error_status_e drv_ignition_switch_get_state(void) {
+    return IGNITION_SWITCH_ON;
 }

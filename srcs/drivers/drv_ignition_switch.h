@@ -18,9 +18,9 @@ enum ignition_switch_error_status_e {
 };
 
 /* This function emulates ignition switch states.
- * Currently we assume that it has only two states true, false, error.
- * For simplicity, currently our dummy ignition switch always return `true`.
+ * We assume that it has three states ON/OFF/ERROR.
+ * For simplicity, currently our dummy ignition switch always returns `ON` state.
  */
-int8_t drv_get_ignition_switch_state(void);
+enum ignition_switch_error_status_e  drv_ignition_switch_get_state(void);
 
 #endif

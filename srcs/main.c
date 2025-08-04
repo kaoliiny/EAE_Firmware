@@ -16,26 +16,33 @@
 #include "main.h"
 #include "coolant_controller.h"
 #include "unistd.h"
+#include <time.h>
 
-static int args_validation(int argc, void **argv) {
-    int8_t temperature_sp = atoi(argv[1]);
+static enum coolant_state_e args_validation(int argc, void **argv) {
+    int8_t temperature_sp;
 
-    if (argc != 2 || temperature_sp < TEMPERATURE_LOW_SETPOINT || temperature_sp > TEMPERATURE_HIGH_SETPOINT) {
-        /* + 1 needed to trim the last '/' from stringd to get file name from full path name. */
-        printf("Usage: %s TEMPERATURE_SETPOINT\n", strrchr(argv[0], '/') + 1);
-        printf("TEMPERATURE_SETPOINT is a reference temperature value in celcius in 20-90 degree range.\n");
-        return ERROR_UNSUCCESS;
+    if (argc == 2) {
+        temperature_sp = atoi(argv[1]);
+        if (temperature_sp >= TEMPERATURE_LOW_SETPOINT && temperature_sp <= TEMPERATURE_HIGH_SETPOINT) {
+            return 0;
+        }
     }
 
-    return 0;
+    /* + 1 needed to trim the last '/' from stringd to get file name from full path name. */
+    printf("Usage: %s TEMPERATURE_SETPOINT\n", strrchr(argv[0], '/') + 1);
+    printf("TEMPERATURE_SETPOINT is a reference temperature value in %d-%d Celsius degree range.\n",
+        TEMPERATURE_LOW_SETPOINT, TEMPERATURE_HIGH_SETPOINT);
+
+    return COOLANT_VALIDATION_ERROR;
 }
 
 __attribute__((noreturn))
 static void main_loop(coolant_t *coolant, void *temperature_sp) {
+    struct timespec request = {0, CYCLE_TAKT_NS};
+
     while (true) {
         switch(coolant->state) {
             case STARTUP:
-                printf("STARTUP\n");
                 if (sys_init(coolant, temperature_sp) == 0) {
                     coolant->state = IDLE;
                 } else {
@@ -72,7 +79,8 @@ static void main_loop(coolant_t *coolant, void *temperature_sp) {
             default:
                 break;
         }
-        sleep(1);
+        /* 0.5s delay */
+        nanosleep(&request, NULL);
     }
 }
 
@@ -83,5 +91,5 @@ int main(int argc, void **argv) {
         main_loop(&coolant, argv[1]);
     }
 
-    return ERROR_UNSUCCESS;
+    return COOLANT_VALIDATION_ERROR;
 }

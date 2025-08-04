@@ -13,7 +13,8 @@ static pump_t pump;
 enum pump_state_e drv_pump_get_state(void) {
 
 }
-enum pump_speed_state_e drv_pump_get_speed(void) {
+
+enum pump_speed_e drv_pump_get_speed(void) {
 
 }
 
@@ -21,11 +22,16 @@ void drv_pump_set_state(enum pump_state_e state) {
     pump.state = state;
 }
 
-void drv_pump_set_speed(enum pump_speed_state_e speed) {
+void drv_pump_set_speed(enum pump_speed_e speed) {
     pump.speed = speed;
 }
 
-void drv_turn_off_pump(void) {
+void drv_pump_turn_off(void) {
     drv_pump_set_speed(PUMP_SPEED_OFF);
     drv_pump_set_state(PUMP_OFF);
+}
+
+void drv_pump_init(void) {
+    drv_pump_set_state(PUMP_ON);
+    drv_pump_set_speed(PUMP_SPEED_OFF);
 }

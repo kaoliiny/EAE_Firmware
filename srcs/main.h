@@ -13,12 +13,12 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#define ERROR_UNSUCCESS -1
-
 /* Low edge value in Celsius degrees to be set as reference  */
 #define TEMPERATURE_LOW_SETPOINT 20
 /* High edge value in Celsius degrees to be set as reference  */
-#define TEMPERATURE_HIGH_SETPOINT 100
+#define TEMPERATURE_HIGH_SETPOINT 92
+
+#define CYCLE_TAKT_NS 500000000 /* 0.5s */
 
 enum coolant_state_e {
     /* System boot and init. */
@@ -38,6 +38,7 @@ enum coolant_state_e {
     ERROR_SHUTDOWN,
 };
 
+/* High level error handle for coolant */
 enum coolant_error_status_e {
     /* Ignition switch OFF */
     COOLANT_OFF,
@@ -47,6 +48,8 @@ enum coolant_error_status_e {
     COOLANT_MALFUNCTION,
     /* DC-DC/AC-DC temperature goes over limit and */
     COOLANT_OVERHEAT_ERROR,
+    /* Argumenst are incorrect */
+    COOLANT_VALIDATION_ERROR
 };
 
 typedef struct coolant_s {
@@ -55,6 +58,6 @@ typedef struct coolant_s {
     uint8_t fan_power;
     uint8_t temperature_setpoint;
     int8_t ignition_swith_state : 1;
-} coolant_t __attribute__((packed));
+} coolant_t;
 
 #endif

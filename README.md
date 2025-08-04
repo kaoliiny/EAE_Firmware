@@ -11,5 +11,13 @@ Assumed to be run under Linux.
     - cmake
 
 ## Build instructions
+Build all:
+`./build.sh all` or `./build.sh`
+
+Build app:
+`./build.sh app`
+
+Build tests:
+`./build.sh tests`
 
 ## Run instructions
