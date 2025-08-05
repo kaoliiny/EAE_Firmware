@@ -53,7 +53,7 @@ enum coolant_error_status_e {
 };
 
 typedef struct {
-    /* If DC-DC/AC-DC temperature goes over limit and we couldn't stop it.
+    /* If DC/DC AC/DC temperature goes over limit and we couldn't stop it.
     The only thing we can do at this point is to go full power, send error and pray (x_x).
     Basically in this mode we're waiting for system shutdown command, ignition switch off
     or untill temperature stabilizes.

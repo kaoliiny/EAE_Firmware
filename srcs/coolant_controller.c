@@ -30,7 +30,7 @@ static pid_controller_t pid_controller_val = {
     .integral = 0,
 };
 
-int16_t pid_controller(coolant_t *coolant, int16_t current_temperature) {
+static int16_t pid_controller(coolant_t *coolant, int16_t current_temperature) {
     int16_t temp_error = coolant->temperature_setpoint - current_temperature;
     pid_controller_val.integral += temp_error;
     int16_t derivative = temp_error - pid_controller_val.prev_error;

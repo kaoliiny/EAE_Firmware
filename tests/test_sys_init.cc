@@ -5,7 +5,6 @@ extern "C" {
     #include "../srcs/drivers/drv_fan.h"
 }
 
-/* Mock init functions */
 
 static enum fan_state_e fan_err_no = FAN_OFF;
 static enum pump_state_e pump_err_no = PUMP_OFF;
@@ -25,11 +24,9 @@ protected:
     // Shared variables for test cases
     coolant_t coolant;
     uint8_t temperature;
-
 };
 
-// coolant_t SysInitFixture::coolant;
-// uint8_t CoolantTest::temperature;
+////////////////// Mock init functions //////////////////
 
 extern "C" void can_init(void) {
 }
@@ -56,6 +53,7 @@ TEST_F(SysInitFixture, FanMalfunction) {
     // Ensure error bits properly set
     EXPECT_EQ(true, coolant.err_bits.fan_malfunction);
     EXPECT_EQ(false, coolant.err_bits.pump_malfunction);
+    EXPECT_EQ(false, coolant.err_bits.temp_sensor_malfunction);
 }
 
 TEST_F(SysInitFixture, PumpMalfunction) {
@@ -66,8 +64,11 @@ TEST_F(SysInitFixture, PumpMalfunction) {
     // Ensure error bits properly set
     EXPECT_EQ(false, coolant.err_bits.fan_malfunction);
     EXPECT_EQ(true, coolant.err_bits.pump_malfunction);
+    EXPECT_EQ(false, coolant.err_bits.temp_sensor_malfunction);
 }
 
+// This test fixture checks sys_init() to ensure that temperature set point
+// was set succesfully, err_bits are unchanged and error status is correct.
 TEST_F(SysInitFixture, PositiveScenario) {
     enum coolant_error_status_e err_no = COOLANT_OFF;
     fan_err_no = FAN_OFF;
@@ -77,6 +78,7 @@ TEST_F(SysInitFixture, PositiveScenario) {
     // Ensure error bits was set properly
     EXPECT_EQ(false, coolant.err_bits.fan_malfunction);
     EXPECT_EQ(false, coolant.err_bits.pump_malfunction);
+    EXPECT_EQ(false, coolant.err_bits.temp_sensor_malfunction);
     // Ensure twmperature setpoint was set properly
     EXPECT_EQ(temperature, coolant.temperature_setpoint);
 }

@@ -31,7 +31,7 @@ Build tests:
 Run app:
 `./run.sh app TEMP_SETPOINT` or `./build/srcs/EAE_Firmware TEMP_SETPOINT`
 
-TEMPERATURE_SETPOINT is a reference temperature value in 20-92 Celsius degree range.
+TEMPERATURE_SETPOINT is a reference temperature value in 20-95 Celsius degree range.
 
 Run tests:
 `./run.sh tests`
