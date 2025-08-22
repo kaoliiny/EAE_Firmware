@@ -35,3 +35,7 @@ TEMPERATURE_SETPOINT is a reference temperature value in 20-95 Celsius degree ra
 
 Run tests:
 `./run.sh tests`
+
+## Note
+This project was primarily made with self-education purpose.
+100% hand-made with love without using AI or external help.
